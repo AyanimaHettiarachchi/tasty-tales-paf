@@ -196,11 +196,11 @@ const LearningPlanDetail = () => {
               
               <div className="flex items-center text-white/80">
                 <img 
-                  src={learningPlan.author?.profileImageUrl || 'https://via.placeholder.com/40'} 
-                  alt={learningPlan.author?.name || 'Author'}
+                  src={learningPlan.author.profileImageUrl || 'https://via.placeholder.com/40'} 
+                  alt={learningPlan.author.name}
                   className="w-8 h-8 rounded-full mr-2"
                 />
-                <span>Created by {learningPlan.author?.name || learningPlan.author?.username || 'Unknown Author'}</span>
+                <span>Created by {learningPlan.author.name}</span>
               </div>
             </div>
           </div>
