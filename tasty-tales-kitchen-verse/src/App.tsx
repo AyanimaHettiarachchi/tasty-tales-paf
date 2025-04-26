@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,6 +13,7 @@ import NotFound from "./pages/NotFound";
 import AddRecipe from "./pages/AddRecipe";
 import AddLearningPlan from "./pages/AddLearningPlan";
 import LearningPlanDetail from "./pages/LearningPlanDetail";
+import EditLearningPlan from "./pages/EditLearningPlan";
 import AddDiscussion from "./pages/AddDiscussion";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
@@ -38,13 +38,14 @@ const App = () => (
           <Route path="/add-recipe" element={<AddRecipe />} />
           <Route path="/add-learning-plan" element={<AddLearningPlan />} />
           <Route path="/learning-plans/:id" element={<LearningPlanDetail />} />
+          <Route path="/learning-plans/:id/edit" element={<EditLearningPlan />} />
           <Route path="/add-discussion" element={<AddDiscussion />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/edit-recipe/:id" element={<EditRecipe />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
-          <Route path="/edit-recipe/:id" element={<EditRecipe />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
