@@ -253,7 +253,16 @@ const AddLearningPlan = () => {
                         <FormItem>
                           <FormLabel>Estimated Duration</FormLabel>
                           <FormControl>
-                            <Input placeholder="e.g., 2 weeks, 1 month" {...field} />
+                            <select 
+                              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                              {...field}
+                            >
+                              <option value="1 week">1 week</option>
+                              <option value="2 weeks">2 weeks</option>
+                              <option value="3 weeks">3 weeks</option>
+                              <option value="1 month">1 month</option>
+                              <option value="2 months">2 months</option>
+                            </select>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
