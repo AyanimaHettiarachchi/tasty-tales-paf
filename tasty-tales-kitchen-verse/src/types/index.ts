@@ -74,34 +74,27 @@ export interface Comment {
 
 // Interface for LearningPlan, as provided
 export interface LearningPlan {
-  id: string;
+  id?: string; // Optional, set by MongoDB
   title: string;
   description: string;
-  imageUrl?: string;
-  author: {
-    id: string;
-    username: string;
-    name: string;
-    followers: number;
-    following: number;
-    recipes: number;
-    learningPlans: number;
-  };
-  steps: LearningStep[];
-  categories: string[];
+  imageUrl?: string; // Optional
+  author: Author; // Required
+  steps: LearningStep[]; // List of learning steps
+  categories: string[]; // List of categories
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
-  estimatedDuration: string;
-  createdAt: string;
-  updatedAt: string;
+  estimatedDuration: number; // Integer, in minutes
+  createdAt?: string; // Set by backend
+  updatedAt?: string; // Set by backend
 }
 
 // Interface for LearningStep, as provided
 export interface LearningStep {
-  id: string;
-  order: number;
+  id?: string; // Optional, set by MongoDB
+  order: number; // Required, indicates step sequence
   title: string;
   description: string;
-  completed: boolean;
+  resources: Resource[]; // List of resources
+  completed: boolean; // Boolean, indicates completion status
 }
 
 // Interface for Resource, as provided
