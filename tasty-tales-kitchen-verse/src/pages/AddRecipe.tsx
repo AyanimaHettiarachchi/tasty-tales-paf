@@ -197,7 +197,7 @@ const AddRecipe = () => {
       <Header />
       <main className="flex-grow bg-gray-50 py-8">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-6 md:p-8">
+          <div className="max-w-3xl mx-auto bg-white rounded-md shadow-sm p-6 md:p-8">
             <h1 className="text-3xl font-bold mb-6">Add New Recipe</h1>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -299,10 +299,25 @@ const AddRecipe = () => {
                       <FormItem>
                         <FormLabel>Categories</FormLabel>
                         <FormControl>
-                          <Input
-                            placeholder="e.g., Dessert, Dinner (comma separated)"
+                          <select
+                            multiple
                             {...field}
-                          />
+                            value={field.value ? field.value.split(',').map(c => c.trim()) : []}
+                            onChange={(e) => {
+                              const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
+                              field.onChange(selectedOptions.join(','));
+                            }}
+                            className="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 min-h-[100px]"
+                          >
+                            <option value="Breakfast">Breakfast</option>
+                            <option value="Lunch">Lunch</option>
+                            <option value="Dinner">Dinner</option>
+                            <option value="Dessert">Dessert</option>
+                            <option value="Snack">Snack</option>
+                            <option value="Appetizer">Appetizer</option>
+                            <option value="Main Course">Main Course</option>
+                            <option value="Side Dish">Side Dish</option>
+                          </select>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
