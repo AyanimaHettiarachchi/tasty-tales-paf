@@ -27,56 +27,15 @@ const LearningPlanDetail = () => {
       setLoading(true);
       setError(null);
       
-      // For now, use mock data until backend is ready
-      const mockPlan = {
-        id: id,
-        title: "Sample Learning Plan",
-        description: "This is a sample learning plan",
-        imageUrl: "",
-        author: {
-          id: "1",
-          username: "user",
-          name: "Test User",
-          followers: 0,
-          following: 0,
-          recipes: 0,
-          learningPlans: 0
-        },
-        steps: [
-          {
-            id: "1",
-            order: 1,
-            title: "First Step",
-            description: "Description of first step",
-            completed: false
-          }
-        ],
-        categories: ["cooking"],
-        difficulty: "Beginner",
-        estimatedDuration: "1 week",
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      };
-
-      setLearningPlan(mockPlan);
-      
-      // Initialize expanded state for all steps
-      const initialExpandedState: Record<string, boolean> = {};
-      mockPlan.steps.forEach((step: LearningStep) => {
-        initialExpandedState[step.id] = false;
-      });
-      setExpandedSteps(initialExpandedState);
-
-      // Once backend is ready, uncomment this
-      /*
       const response = await api.get(`/api/learning-plans/${id}`);
       setLearningPlan(response.data);
+      
+      // Initialize expanded state for all steps
       const initialExpandedState: Record<string, boolean> = {};
       response.data.steps.forEach((step: LearningStep) => {
         initialExpandedState[step.id] = false;
       });
       setExpandedSteps(initialExpandedState);
-      */
     } catch (error: any) {
       console.error('Error fetching learning plan:', error);
       setError('Failed to load learning plan. Please try again later.');
@@ -121,9 +80,7 @@ const LearningPlanDetail = () => {
         steps: updatedSteps
       };
 
-      // Once backend is ready, uncomment this
-      // await api.put(`/api/learning-plans/${id}`, updatedLearningPlan);
-      
+      await api.put(`/api/learning-plans/${id}`, updatedLearningPlan);
       setLearningPlan(updatedLearningPlan);
       toast.success('Progress updated successfully');
     } catch (error: any) {

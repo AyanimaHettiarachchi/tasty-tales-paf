@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Filter, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -7,11 +6,41 @@ import { Input } from '@/components/ui/input';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import LearningPlanCard from '@/components/LearningPlanCard';
-import { mockLearningPlans } from '@/data/mockData';
+import { toast } from 'sonner';
+import api from '@/api/axios';
+import { LearningPlan } from '@/types';
 
 const LearningPlans = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterOpen, setFilterOpen] = useState(false);
+  const [learningPlans, setLearningPlans] = useState<LearningPlan[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchLearningPlans();
+  }, []);
+
+  const fetchLearningPlans = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await api.get('/api/learning-plans');
+      setLearningPlans(response.data);
+    } catch (error: any) {
+      console.error('Error fetching learning plans:', error);
+      setError('Failed to load learning plans');
+      toast.error('Failed to load learning plans');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Filter learning plans based on search query
+  const filteredPlans = learningPlans.filter(plan => 
+    plan.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    plan.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -121,12 +150,48 @@ const LearningPlans = () => {
             </div>
           )}
           
+          {/* Loading State */}
+          {loading && (
+            <div className="text-center py-12">
+              <p className="text-gray-500">Loading learning plans...</p>
+            </div>
+          )}
+
+          {/* Error State */}
+          {error && (
+            <div className="text-center py-12">
+              <p className="text-red-500">{error}</p>
+              <Button 
+                onClick={fetchLearningPlans}
+                variant="outline"
+                className="mt-4"
+              >
+                Try Again
+              </Button>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!loading && !error && filteredPlans.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-gray-500">No learning plans found.</p>
+              <Button 
+                asChild
+                className="mt-4 bg-tasty-primary hover:bg-tasty-dark"
+              >
+                <Link to="/add-learning-plan">Create Your First Learning Plan</Link>
+              </Button>
+            </div>
+          )}
+          
           {/* Learning Plans List */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {mockLearningPlans.map((plan) => (
-              <LearningPlanCard key={plan.id} learningPlan={plan} />
-            ))}
-          </div>
+          {!loading && !error && filteredPlans.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {filteredPlans.map((plan) => (
+                <LearningPlanCard key={plan.id} learningPlan={plan} />
+              ))}
+            </div>
+          )}
         </div>
       </main>
       
