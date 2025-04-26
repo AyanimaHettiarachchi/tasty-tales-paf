@@ -78,15 +78,7 @@ export interface LearningPlan {
   title: string;
   description: string;
   imageUrl?: string;
-  author: {
-    id: string;
-    username: string;
-    name: string;
-    followers: number;
-    following: number;
-    recipes: number;
-    learningPlans: number;
-  };
+  author: Author;
   steps: LearningStep[];
   categories: string[];
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
