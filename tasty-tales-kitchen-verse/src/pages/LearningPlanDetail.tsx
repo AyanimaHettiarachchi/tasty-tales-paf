@@ -1,105 +1,45 @@
+
 import { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Clock, Award, BookOpen, Check, Edit, Trash, ArrowLeft } from 'lucide-react';
-import { toast } from 'sonner';
-import api from '@/api/axios';
+import { useParams, Link } from 'react-router-dom';
+import { Clock, Award, BookOpen, Check, ExternalLink, ArrowLeft } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Checkbox } from '@/components/ui/checkbox';
+import { mockLearningPlans } from '@/data/mockData';
 import { LearningPlan, LearningStep } from '@/types';
 
 const LearningPlanDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const [learningPlan, setLearningPlan] = useState<LearningPlan | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [expandedSteps, setExpandedSteps] = useState<Record<string, boolean>>({});
   
   useEffect(() => {
+    // Simulate API fetch with the mock data
+    const fetchLearningPlan = () => {
+      setLoading(true);
+      
+      // Find the learning plan by ID from mock data
+      const plan = mockLearningPlans.find(plan => plan.id === id);
+      
+      if (plan) {
+        setLearningPlan(plan);
+        
+        // Initialize expanded state for all steps
+        const initialExpandedState: Record<string, boolean> = {};
+        plan.steps.forEach(step => {
+          initialExpandedState[step.id] = false;
+        });
+        setExpandedSteps(initialExpandedState);
+      }
+      
+      setLoading(false);
+    };
+    
     fetchLearningPlan();
   }, [id]);
-  
-  const fetchLearningPlan = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      // For now, use mock data until backend is ready
-      const mockPlan = {
-        id: id,
-        title: "Sample Learning Plan",
-        description: "This is a sample learning plan",
-        imageUrl: "",
-        author: {
-          id: "1",
-          username: "user",
-          name: "Test User",
-          followers: 0,
-          following: 0,
-          recipes: 0,
-          learningPlans: 0
-        },
-        steps: [
-          {
-            id: "1",
-            order: 1,
-            title: "First Step",
-            description: "Description of first step",
-            completed: false
-          }
-        ],
-        categories: ["cooking"],
-        difficulty: "Beginner",
-        estimatedDuration: "1 week",
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      };
-
-      setLearningPlan(mockPlan);
-      
-      // Initialize expanded state for all steps
-      const initialExpandedState: Record<string, boolean> = {};
-      mockPlan.steps.forEach((step: LearningStep) => {
-        initialExpandedState[step.id] = false;
-      });
-      setExpandedSteps(initialExpandedState);
-
-      // Once backend is ready, uncomment this
-      /*
-      const response = await api.get(`/api/learning-plans/${id}`);
-      setLearningPlan(response.data);
-      const initialExpandedState: Record<string, boolean> = {};
-      response.data.steps.forEach((step: LearningStep) => {
-        initialExpandedState[step.id] = false;
-      });
-      setExpandedSteps(initialExpandedState);
-      */
-    } catch (error: any) {
-      console.error('Error fetching learning plan:', error);
-      setError('Failed to load learning plan. Please try again later.');
-      toast.error('Failed to load learning plan');
-    } finally {
-      setLoading(false);
-    }
-  };
-  
-  const handleDelete = async () => {
-    if (!window.confirm('Are you sure you want to delete this learning plan?')) {
-      return;
-    }
-
-    try {
-      await api.delete(`/api/learning-plans/${id}`);
-      toast.success('Learning plan deleted successfully');
-      navigate('/learning-plans');
-    } catch (error: any) {
-      console.error('Error deleting learning plan:', error);
-      toast.error('Failed to delete learning plan');
-    }
-  };
   
   const toggleStepExpand = (stepId: string) => {
     setExpandedSteps(prev => ({
@@ -108,28 +48,17 @@ const LearningPlanDetail = () => {
     }));
   };
   
-  const toggleStepCompletion = async (step: LearningStep) => {
+  const toggleStepCompletion = (step: LearningStep) => {
     if (!learningPlan) return;
     
-    try {
-      const updatedSteps = learningPlan.steps.map(s => 
-        s.id === step.id ? { ...s, completed: !s.completed } : s
-      );
-      
-      const updatedLearningPlan = {
-        ...learningPlan,
-        steps: updatedSteps
-      };
-
-      // Once backend is ready, uncomment this
-      // await api.put(`/api/learning-plans/${id}`, updatedLearningPlan);
-      
-      setLearningPlan(updatedLearningPlan);
-      toast.success('Progress updated successfully');
-    } catch (error: any) {
-      console.error('Error updating step completion:', error);
-      toast.error('Failed to update progress');
-    }
+    const updatedSteps = learningPlan.steps.map(s => 
+      s.id === step.id ? { ...s, completed: !s.completed } : s
+    );
+    
+    setLearningPlan({
+      ...learningPlan,
+      steps: updatedSteps
+    });
   };
   
   // Calculate progress
@@ -154,17 +83,13 @@ const LearningPlanDetail = () => {
     );
   }
   
-  if (error || !learningPlan) {
+  if (!learningPlan) {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-grow bg-gray-50 flex flex-col items-center justify-center p-4">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">
-            {error || 'Learning Plan Not Found'}
-          </h1>
-          <p className="text-gray-600 mb-6">
-            {error ? 'Please try again later.' : 'The learning plan you\'re looking for couldn\'t be found.'}
-          </p>
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">Learning Plan Not Found</h1>
+          <p className="text-gray-600 mb-6">The learning plan you're looking for couldn't be found.</p>
           <Button asChild className="bg-tasty-primary hover:bg-tasty-dark">
             <Link to="/learning-plans">Return to Learning Plans</Link>
           </Button>
@@ -185,40 +110,16 @@ const LearningPlanDetail = () => {
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/30">
             <div className="container mx-auto px-4 h-full flex flex-col justify-end pb-6">
-              <div className="flex justify-between items-center w-full mb-4">
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  asChild 
-                  className="text-white hover:bg-black/20"
-                >
-                  <Link to="/learning-plans">
-                    <ArrowLeft className="mr-1 h-4 w-4" /> Back to Learning Plans
-                  </Link>
-                </Button>
-                
-                <div className="flex gap-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    asChild
-                    className="text-white hover:bg-black/20"
-                  >
-                    <Link to={`/learning-plans/${id}/edit`}>
-                      <Edit className="mr-1 h-4 w-4" /> Edit
-                    </Link>
-                  </Button>
-                  
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleDelete}
-                    className="text-white hover:bg-black/20"
-                  >
-                    <Trash className="mr-1 h-4 w-4" /> Delete
-                  </Button>
-                </div>
-              </div>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                asChild 
+                className="self-start text-white mb-4 hover:bg-black/20"
+              >
+                <Link to="/learning-plans">
+                  <ArrowLeft className="mr-1 h-4 w-4" /> Back to Learning Plans
+                </Link>
+              </Button>
               <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{learningPlan.title}</h1>
               <p className="text-lg text-white/90 mb-4 max-w-2xl">{learningPlan.description}</p>
               
@@ -319,6 +220,36 @@ const LearningPlanDetail = () => {
                 {expandedSteps[step.id] && (
                   <div className="px-4 pb-4 pt-2 border-t ml-12">
                     <p className="text-gray-700 mb-4">{step.description}</p>
+                    
+                    {step.resources.length > 0 && (
+                      <div className="space-y-3">
+                        <h4 className="font-medium">Learning Resources:</h4>
+                        <ul className="space-y-2">
+                          {step.resources.map((resource) => (
+                            <li key={resource.id} className="flex items-start">
+                              <div className="mr-2 mt-0.5">
+                                {resource.type === 'Video' && <BookOpen className="h-4 w-4 text-blue-500" />}
+                                {resource.type === 'Blog' && <BookOpen className="h-4 w-4 text-green-500" />}
+                                {resource.type === 'Book' && <BookOpen className="h-4 w-4 text-purple-500" />}
+                                {resource.type === 'Other' && <BookOpen className="h-4 w-4 text-gray-500" />}
+                              </div>
+                              <div>
+                                <a 
+                                  href={resource.url} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-blue-600 hover:underline flex items-center"
+                                >
+                                  {resource.title}
+                                  <ExternalLink className="ml-1 h-3 w-3" />
+                                </a>
+                                <span className="text-xs text-gray-500">{resource.type}</span>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

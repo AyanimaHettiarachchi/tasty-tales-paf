@@ -1,10 +1,10 @@
+
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Minus, Upload, X } from 'lucide-react';
+import { Plus, Minus, Upload, X, BookOpen, Link as LinkIcon } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'sonner';
-import api from '@/api/axios';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -36,6 +36,7 @@ const AddLearningPlan = () => {
       order: 1, 
       title: '', 
       description: '', 
+      resources: [{ id: uuidv4(), title: '', type: 'Video' as const, url: '' }],
       completed: false
     }
   ]);
@@ -60,6 +61,7 @@ const AddLearningPlan = () => {
         order: newOrder, 
         title: '', 
         description: '', 
+        resources: [{ id: uuidv4(), title: '', type: 'Video' as const, url: '' }],
         completed: false
       }
     ]);
@@ -85,6 +87,50 @@ const AddLearningPlan = () => {
     );
   };
 
+  const addResource = (stepId: string) => {
+    setSteps(
+      steps.map(step => {
+        if (step.id === stepId) {
+          return {
+            ...step,
+            resources: [...step.resources, { id: uuidv4(), title: '', type: 'Video' as const, url: '' }]
+          };
+        }
+        return step;
+      })
+    );
+  };
+
+  const removeResource = (stepId: string, resourceId: string) => {
+    setSteps(
+      steps.map(step => {
+        if (step.id === stepId && step.resources.length > 1) {
+          return {
+            ...step,
+            resources: step.resources.filter(resource => resource.id !== resourceId)
+          };
+        }
+        return step;
+      })
+    );
+  };
+
+  const updateResource = (stepId: string, resourceId: string, field: string, value: string) => {
+    setSteps(
+      steps.map(step => {
+        if (step.id === stepId) {
+          return {
+            ...step,
+            resources: step.resources.map(resource => 
+              resource.id === resourceId ? { ...resource, [field]: value } : resource
+            )
+          };
+        }
+        return step;
+      })
+    );
+  };
+
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -102,79 +148,52 @@ const AddLearningPlan = () => {
     setImageUrl('');
   };
 
-  const onSubmit = async (data: LearningPlanFormValues) => {
-    try {
-      // Validation
-      if (steps.some(step => !step.title || !step.description)) {
-        toast.error('Please fill in all step titles and descriptions');
-        return;
-      }
-
-      // Process categories
-      const categoriesArray = data.categories.split(',').map(c => c.trim()).filter(Boolean);
-
-      // Create learning plan object
-      const learningPlan = {
-        title: data.title,
-        description: data.description,
-        imageUrl: imageUrl || undefined,
-        author: {
-          id: 'current-user-id',
-          username: 'current-user',
-          name: 'Current User',
-          followers: 0,
-          following: 0,
-          recipes: 0,
-          learningPlans: 0
-        },
-        steps: steps.map(step => ({
-          ...step,
-          order: Number(step.order) // Ensure order is a number
-        })),
-        categories: categoriesArray,
-        difficulty: data.difficulty,
-        estimatedDuration: data.estimatedDuration
-      };
-
-      console.log('Sending request to:', '/api/learning-plans');
-      console.log('Request data:', JSON.stringify(learningPlan, null, 2));
-
-      // Send to backend
-      const response = await api.post('/api/learning-plans', learningPlan);
-      
-      console.log('Response:', response.data);
-
-      // Show success message
-      toast.success('Learning plan created successfully!');
-      
-      // Navigate to the newly created learning plan
-      navigate(`/learning-plans/${response.data.id}`);
-    } catch (error: any) {
-      console.error('Error creating learning plan:', error);
-      console.error('Error details:', {
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-        data: error.response?.data,
-        config: {
-          url: error.config?.url,
-          method: error.config?.method,
-          baseURL: error.config?.baseURL,
-        }
-      });
-      
-      // More detailed error message
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        toast.error(`Server error: ${error.response.data?.message || error.response.statusText || 'Failed to create learning plan'}`);
-      } else if (error.request) {
-        // The request was made but no response was received
-        toast.error('No response from server. Please check if the backend is running.');
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        toast.error('Failed to create learning plan. Please try again.');
-      }
+  const onSubmit = (data: LearningPlanFormValues) => {
+    // Validation
+    if (steps.some(step => !step.title || !step.description)) {
+      toast.error('Please fill in all step titles and descriptions');
+      return;
     }
+
+    if (steps.some(step => step.resources.some(r => !r.title || !r.url))) {
+      toast.error('Please fill in all resource titles and URLs');
+      return;
+    }
+
+    // Process categories
+    const categoriesArray = data.categories.split(',').map(c => c.trim()).filter(Boolean);
+
+    // Create learning plan object
+    const learningPlan: Partial<LearningPlan> = {
+      id: uuidv4(),
+      title: data.title,
+      description: data.description,
+      imageUrl: imageUrl || undefined,
+      author: {
+        id: 'current-user-id', // This would be the real user ID in a real app
+        username: 'current-user',
+        name: 'Current User',
+        followers: 0,
+        following: 0,
+        recipes: 0,
+        learningPlans: 0
+      },
+      steps: steps,
+      categories: categoriesArray,
+      difficulty: data.difficulty,
+      estimatedDuration: data.estimatedDuration,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    // Here you would typically send this to your API
+    console.log('Submitting learning plan:', learningPlan);
+    
+    // Show success message
+    toast.success('Learning plan created successfully!');
+    
+    // Navigate back to learning plans page
+    navigate('/learning-plans');
   };
 
   return (
@@ -363,6 +382,73 @@ const AddLearningPlan = () => {
                             placeholder="Describe what to learn in this step"
                             className="min-h-[80px]"
                           />
+                        </div>
+                        
+                        {/* Resources */}
+                        <div className="space-y-3">
+                          <div className="flex justify-between items-center">
+                            <label className="text-sm font-semibold">Learning Resources</label>
+                            <Button 
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => addResource(step.id)}
+                              className="flex items-center gap-1 text-xs"
+                            >
+                              <Plus className="h-3 w-3" /> Add Resource
+                            </Button>
+                          </div>
+                          
+                          {step.resources.map((resource) => (
+                            <div key={resource.id} className="grid grid-cols-12 gap-2 items-end border-t pt-2">
+                              <div className="col-span-5">
+                                <label className="text-xs font-medium">Title</label>
+                                <Input 
+                                  value={resource.title}
+                                  onChange={(e) => updateResource(step.id, resource.id, 'title', e.target.value)}
+                                  placeholder="Resource title"
+                                  className="text-sm"
+                                />
+                              </div>
+                              
+                              <div className="col-span-3">
+                                <label className="text-xs font-medium">Type</label>
+                                <select 
+                                  value={resource.type}
+                                  onChange={(e) => updateResource(step.id, resource.id, 'type', e.target.value as 'Video' | 'Blog' | 'Book' | 'Other')}
+                                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                >
+                                  <option value="Video">Video</option>
+                                  <option value="Blog">Blog</option>
+                                  <option value="Book">Book</option>
+                                  <option value="Other">Other</option>
+                                </select>
+                              </div>
+                              
+                              <div className="col-span-3">
+                                <label className="text-xs font-medium">URL</label>
+                                <Input 
+                                  value={resource.url}
+                                  onChange={(e) => updateResource(step.id, resource.id, 'url', e.target.value)}
+                                  placeholder="Resource URL"
+                                  className="text-sm"
+                                />
+                              </div>
+                              
+                              <div className="col-span-1">
+                                <Button 
+                                  type="button"
+                                  variant="ghost"
+                                  size="icon"
+                                  onClick={() => removeResource(step.id, resource.id)}
+                                  disabled={step.resources.length === 1}
+                                  className="text-red-500 hover:text-red-700"
+                                >
+                                  <Minus className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </div>
