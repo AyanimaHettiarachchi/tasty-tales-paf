@@ -35,7 +35,6 @@ const AddLearningPlan = () => {
       id: uuidv4(), 
       order: 1, 
       title: '', 
-      description: '', 
       completed: false
     }
   ]);
@@ -59,7 +58,6 @@ const AddLearningPlan = () => {
         id: uuidv4(), 
         order: newOrder, 
         title: '', 
-        description: '', 
         completed: false
       }
     ]);
@@ -105,8 +103,8 @@ const AddLearningPlan = () => {
   const onSubmit = async (data: LearningPlanFormValues) => {
     try {
       // Validation
-      if (steps.some(step => !step.title || !step.description)) {
-        toast.error('Please fill in all step titles and descriptions');
+      if (steps.some(step => !step.title)) {
+        toast.error('Please fill in all step titles');
         return;
       }
 
@@ -361,16 +359,6 @@ const AddLearningPlan = () => {
                             value={step.title}
                             onChange={(e) => updateStep(step.id, 'title', e.target.value)}
                             placeholder="Enter step title"
-                          />
-                        </div>
-                        
-                        <div>
-                          <label className="text-sm font-medium">Step Description</label>
-                          <Textarea
-                            value={step.description}
-                            onChange={(e) => updateStep(step.id, 'description', e.target.value)}
-                            placeholder="Describe what to learn in this step"
-                            className="min-h-[80px]"
                           />
                         </div>
                       </div>
