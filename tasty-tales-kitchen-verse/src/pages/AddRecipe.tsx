@@ -1,4 +1,3 @@
-// DOCUMENT filename="AddRecipe.tsx"
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -280,7 +279,14 @@ const AddRecipe = () => {
                       <FormItem>
                         <FormLabel>Difficulty</FormLabel>
                         <FormControl>
-                          <Input placeholder="e.g., Easy, Medium, Hard" {...field} />
+                          <select
+                            {...field}
+                            className="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                          >
+                            <option value="Easy">Easy</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Hard">Hard</option>
+                          </select>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
