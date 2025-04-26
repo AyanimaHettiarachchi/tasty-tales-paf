@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 import { Clock, Award, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -64,7 +65,7 @@ const LearningPlanCard = ({ learningPlan }: LearningPlanCardProps) => {
         </div>
 
         <p className="text-sm text-gray-600 mb-4">
-          By <span className="font-medium">{author?.name || author?.username || 'Unknown Author'}</span>
+          By <span className="font-medium">{author.name}</span>
         </p>
       </div>
 
