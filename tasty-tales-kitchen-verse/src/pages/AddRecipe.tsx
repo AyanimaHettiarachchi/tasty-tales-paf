@@ -381,7 +381,7 @@ const AddRecipe = () => {
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h2 className="text-xl font-semibold border-b pb-2">Ingredients</h2>
+                  <h2 className="text-xl font-semibold border-b pb-2">Ingredients :</h2>
                   {ingredients.length === 0 && (
                     <p className="text-gray-500">No ingredients added yet.</p>
                   )}
@@ -432,7 +432,7 @@ const AddRecipe = () => {
                   </Button>
                 </div>
                 <div className="space-y-4">
-                  <h2 className="text-xl font-semibold border-b pb-2">Steps</h2>
+                  <h2 className="text-xl font-semibold border-b pb-2">Steps :</h2>
                   {steps.length === 0 && (
                     <p className="text-gray-500">No steps added yet.</p>
                   )}
