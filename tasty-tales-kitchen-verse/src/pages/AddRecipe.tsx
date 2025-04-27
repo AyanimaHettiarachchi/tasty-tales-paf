@@ -208,7 +208,7 @@ const AddRecipe = () => {
                     name="title"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Title</FormLabel>
+                        <FormLabel>Title :</FormLabel>
                         <FormControl>
                           <Input placeholder="e.g., Chocolate Cake" {...field} />
                         </FormControl>
@@ -221,7 +221,7 @@ const AddRecipe = () => {
                     name="description"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Description</FormLabel>
+                        <FormLabel>Description :</FormLabel>
                         <FormControl>
                           <Textarea
                             placeholder="Describe your recipe..."
@@ -238,7 +238,7 @@ const AddRecipe = () => {
                     name="preparationTime"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Preparation Time (minutes)</FormLabel>
+                        <FormLabel>Preparation Time (minutes) :</FormLabel>
                         <FormControl>
                           <Input type="number" placeholder="e.g., 15" {...field} />
                         </FormControl>
@@ -251,7 +251,7 @@ const AddRecipe = () => {
                     name="cookingTime"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Cooking Time (minutes)</FormLabel>
+                        <FormLabel>Cooking Time (minutes) :</FormLabel>
                         <FormControl>
                           <Input type="number" placeholder="e.g., 30" {...field} />
                         </FormControl>
@@ -264,7 +264,7 @@ const AddRecipe = () => {
                     name="servings"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Servings</FormLabel>
+                        <FormLabel>Servings :</FormLabel>
                         <FormControl>
                           <Input type="number" placeholder="e.g., 4" {...field} />
                         </FormControl>
@@ -277,7 +277,7 @@ const AddRecipe = () => {
                     name="difficulty"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Difficulty</FormLabel>
+                        <FormLabel>Difficulty :</FormLabel>
                         <FormControl>
                           <select
                             {...field}
@@ -297,7 +297,7 @@ const AddRecipe = () => {
                     name="categories"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Categories</FormLabel>
+                        <FormLabel>Categories :</FormLabel>
                         <FormControl>
                           <select
                             multiple
@@ -328,7 +328,7 @@ const AddRecipe = () => {
                     name="tags"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Tags</FormLabel>
+                        <FormLabel>Tags :</FormLabel>
                         <FormControl>
                           <Input
                             placeholder="e.g., Quick, Healthy (comma separated)"
@@ -341,7 +341,7 @@ const AddRecipe = () => {
                   />
                 </div>
                 <div className="space-y-4">
-                  <h2 className="text-xl font-semibold border-b pb-2">Images</h2>
+                  <h2 className="text-xl font-semibold border-b pb-2">Images :</h2>
                   <div className="space-y-2">
                     <label className="block text-sm font-medium">
                       Recipe Images (up to 3)
