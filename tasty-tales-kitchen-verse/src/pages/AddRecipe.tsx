@@ -198,7 +198,7 @@ const AddRecipe = () => {
       <main className="flex-grow bg-gray-50 py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto bg-white rounded-md shadow-sm p-6 md:p-8">
-            <h1 className="text-3xl font-bold mb-6">Add New Recipe</h1>
+            <h1 className="text-3xl font-bold mb-8 text-center">Add New Recipe</h1>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 <div className="space-y-4">
