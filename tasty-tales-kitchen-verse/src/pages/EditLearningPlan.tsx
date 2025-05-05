@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Plus, Minus, Upload, X } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'sonner';
@@ -28,8 +28,10 @@ type LearningPlanFormValues = {
   categories: string;
 };
 
-const AddLearningPlan = () => {
+const EditLearningPlan = () => {
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const [steps, setSteps] = useState([
     { 
       id: uuidv4(), 
@@ -50,6 +52,41 @@ const AddLearningPlan = () => {
       categories: '',
     },
   });
+
+  useEffect(() => {
+    fetchLearningPlan();
+  }, [id]);
+
+  const fetchLearningPlan = async () => {
+    try {
+      setLoading(true);
+      const response = await api.get(`/api/learning-plans/${id}`);
+      const plan = response.data;
+
+      // Set form values
+      form.reset({
+        title: plan.title,
+        description: plan.description,
+        difficulty: plan.difficulty,
+        estimatedDuration: plan.estimatedDuration,
+        categories: plan.categories.join(', '),
+      });
+
+      // Set steps
+      setSteps(plan.steps);
+
+      // Set image URL
+      if (plan.imageUrl) {
+        setImageUrl(plan.imageUrl);
+      }
+    } catch (error) {
+      console.error('Error fetching learning plan:', error);
+      toast.error('Failed to load learning plan');
+      navigate('/learning-plans');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const addStep = () => {
     const newOrder = steps.length + 1;
@@ -114,68 +151,44 @@ const AddLearningPlan = () => {
       const categoriesArray = data.categories.split(',').map(c => c.trim()).filter(Boolean);
 
       // Create learning plan object
-      const learningPlan = {
+      const updatedLearningPlan = {
         title: data.title,
         description: data.description,
         imageUrl: imageUrl || undefined,
-        author: {
-          id: 'current-user-id',
-          username: 'current-user',
-          name: 'Current User',
-          followers: 0,
-          following: 0,
-          recipes: 0,
-          learningPlans: 0
-        },
         steps: steps.map(step => ({
           ...step,
-          order: Number(step.order) // Ensure order is a number
+          order: Number(step.order)
         })),
         categories: categoriesArray,
         difficulty: data.difficulty,
         estimatedDuration: data.estimatedDuration
       };
 
-      console.log('Sending request to:', '/api/learning-plans');
-      console.log('Request data:', JSON.stringify(learningPlan, null, 2));
-
       // Send to backend
-      const response = await api.post('/api/learning-plans', learningPlan);
+      await api.put(`/api/learning-plans/${id}`, updatedLearningPlan);
       
-      console.log('Response:', response.data);
-
       // Show success message
-      toast.success('Learning plan created successfully!');
+      toast.success('Learning plan updated successfully!');
       
-      // Navigate to the newly created learning plan
-      navigate(`/learning-plans/${response.data.id}`);
+      // Navigate back to learning plan details
+      navigate(`/learning-plans/${id}`);
     } catch (error: any) {
-      console.error('Error creating learning plan:', error);
-      console.error('Error details:', {
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-        data: error.response?.data,
-        config: {
-          url: error.config?.url,
-          method: error.config?.method,
-          baseURL: error.config?.baseURL,
-        }
-      });
-      
-      // More detailed error message
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        toast.error(`Server error: ${error.response.data?.message || error.response.statusText || 'Failed to create learning plan'}`);
-      } else if (error.request) {
-        // The request was made but no response was received
-        toast.error('No response from server. Please check if the backend is running.');
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        toast.error('Failed to create learning plan. Please try again.');
-      }
+      console.error('Error updating learning plan:', error);
+      toast.error('Failed to update learning plan. Please try again.');
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-grow bg-gray-50 flex items-center justify-center">
+          <div className="text-xl text-gray-500">Loading learning plan...</div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -184,7 +197,7 @@ const AddLearningPlan = () => {
       <main className="flex-grow bg-gray-50 py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-6 md:p-8">
-            <h1 className="text-3xl font-bold mb-6">Create a Learning Plan</h1>
+            <h1 className="text-3xl font-bold mb-6">Edit Learning Plan</h1>
             
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -375,7 +388,7 @@ const AddLearningPlan = () => {
                     type="submit" 
                     className="bg-tasty-primary hover:bg-tasty-dark"
                   >
-                    Create Learning Plan
+                    Update Learning Plan
                   </Button>
                 </div>
               </form>
@@ -389,4 +402,4 @@ const AddLearningPlan = () => {
   );
 };
 
-export default AddLearningPlan;
+export default EditLearningPlan; 
