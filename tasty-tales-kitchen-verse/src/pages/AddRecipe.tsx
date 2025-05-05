@@ -1,4 +1,3 @@
-// DOCUMENT filename="AddRecipe.tsx"
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -198,8 +197,8 @@ const AddRecipe = () => {
       <Header />
       <main className="flex-grow bg-gray-50 py-8">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-6 md:p-8">
-            <h1 className="text-3xl font-bold mb-6">Add New Recipe</h1>
+          <div className="max-w-3xl mx-auto bg-white rounded-md shadow-sm p-6 md:p-8">
+            <h1 className="text-3xl font-bold mb-8 text-center">Add New Recipe</h1>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 <div className="space-y-4">
@@ -209,7 +208,7 @@ const AddRecipe = () => {
                     name="title"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Title</FormLabel>
+                        <FormLabel>Title :</FormLabel>
                         <FormControl>
                           <Input placeholder="e.g., Chocolate Cake" {...field} />
                         </FormControl>
@@ -222,7 +221,7 @@ const AddRecipe = () => {
                     name="description"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Description</FormLabel>
+                        <FormLabel>Description :</FormLabel>
                         <FormControl>
                           <Textarea
                             placeholder="Describe your recipe..."
@@ -239,7 +238,7 @@ const AddRecipe = () => {
                     name="preparationTime"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Preparation Time (minutes)</FormLabel>
+                        <FormLabel>Preparation Time (minutes) :</FormLabel>
                         <FormControl>
                           <Input type="number" placeholder="e.g., 15" {...field} />
                         </FormControl>
@@ -252,7 +251,7 @@ const AddRecipe = () => {
                     name="cookingTime"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Cooking Time (minutes)</FormLabel>
+                        <FormLabel>Cooking Time (minutes) :</FormLabel>
                         <FormControl>
                           <Input type="number" placeholder="e.g., 30" {...field} />
                         </FormControl>
@@ -265,7 +264,7 @@ const AddRecipe = () => {
                     name="servings"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Servings</FormLabel>
+                        <FormLabel>Servings :</FormLabel>
                         <FormControl>
                           <Input type="number" placeholder="e.g., 4" {...field} />
                         </FormControl>
@@ -278,9 +277,16 @@ const AddRecipe = () => {
                     name="difficulty"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Difficulty</FormLabel>
+                        <FormLabel>Difficulty :</FormLabel>
                         <FormControl>
-                          <Input placeholder="e.g., Easy, Medium, Hard" {...field} />
+                          <select
+                            {...field}
+                            className="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                          >
+                            <option value="Easy">Easy</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Hard">Hard</option>
+                          </select>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -291,12 +297,27 @@ const AddRecipe = () => {
                     name="categories"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Categories</FormLabel>
+                        <FormLabel>Categories :</FormLabel>
                         <FormControl>
-                          <Input
-                            placeholder="e.g., Dessert, Dinner (comma separated)"
+                          <select
+                            multiple
                             {...field}
-                          />
+                            value={field.value ? field.value.split(',').map(c => c.trim()) : []}
+                            onChange={(e) => {
+                              const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
+                              field.onChange(selectedOptions.join(','));
+                            }}
+                            className="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 min-h-[100px]"
+                          >
+                            <option value="Breakfast">Breakfast</option>
+                            <option value="Lunch">Lunch</option>
+                            <option value="Dinner">Dinner</option>
+                            <option value="Dessert">Dessert</option>
+                            <option value="Snack">Snack</option>
+                            <option value="Appetizer">Appetizer</option>
+                            <option value="Main Course">Main Course</option>
+                            <option value="Side Dish">Side Dish</option>
+                          </select>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -307,7 +328,7 @@ const AddRecipe = () => {
                     name="tags"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Tags</FormLabel>
+                        <FormLabel>Tags :</FormLabel>
                         <FormControl>
                           <Input
                             placeholder="e.g., Quick, Healthy (comma separated)"
@@ -320,7 +341,7 @@ const AddRecipe = () => {
                   />
                 </div>
                 <div className="space-y-4">
-                  <h2 className="text-xl font-semibold border-b pb-2">Images</h2>
+                  <h2 className="text-xl font-semibold border-b pb-2">Images :</h2>
                   <div className="space-y-2">
                     <label className="block text-sm font-medium">
                       Recipe Images (up to 3)
@@ -360,7 +381,7 @@ const AddRecipe = () => {
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h2 className="text-xl font-semibold border-b pb-2">Ingredients</h2>
+                  <h2 className="text-xl font-semibold border-b pb-2">Ingredients :</h2>
                   {ingredients.length === 0 && (
                     <p className="text-gray-500">No ingredients added yet.</p>
                   )}
@@ -411,7 +432,7 @@ const AddRecipe = () => {
                   </Button>
                 </div>
                 <div className="space-y-4">
-                  <h2 className="text-xl font-semibold border-b pb-2">Steps</h2>
+                  <h2 className="text-xl font-semibold border-b pb-2">Steps :</h2>
                   {steps.length === 0 && (
                     <p className="text-gray-500">No steps added yet.</p>
                   )}
