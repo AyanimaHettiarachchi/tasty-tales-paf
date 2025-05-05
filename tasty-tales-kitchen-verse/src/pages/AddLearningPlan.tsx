@@ -111,7 +111,7 @@ const AddLearningPlan = () => {
       // Process categories
       const categoriesArray = data.categories.split(',').map(c => c.trim()).filter(Boolean);
 
-      // Create learning plan objec
+      // Create learning plan object
       const learningPlan = {
         title: data.title,
         description: data.description,
