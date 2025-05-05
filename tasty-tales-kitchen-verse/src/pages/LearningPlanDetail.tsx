@@ -30,7 +30,7 @@ const LearningPlanDetail = () => {
       const response = await api.get(`/api/learning-plans/${id}`);
       setLearningPlan(response.data);
       
-      // Initialize expanded state for all steps
+      // Initialize expanded state for all step
       const initialExpandedState: Record<string, boolean> = {};
       response.data.steps.forEach((step: LearningStep) => {
         initialExpandedState[step.id] = false;
