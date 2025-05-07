@@ -23,7 +23,7 @@ import { LearningPlan } from '@/types';
 type LearningPlanFormValues = {
   title: string;
   description: string;
-  difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
+  courseType: 'Beginner' | 'Intermediate' | 'Advanced';
   estimatedDuration: string;
   categories: string;
 };
@@ -35,7 +35,6 @@ const AddLearningPlan = () => {
       id: uuidv4(), 
       order: 1, 
       title: '', 
-      description: '', 
       completed: false
     }
   ]);
@@ -45,7 +44,7 @@ const AddLearningPlan = () => {
     defaultValues: {
       title: '',
       description: '',
-      difficulty: 'Beginner',
+      courseType: 'Beginner',
       estimatedDuration: '2 weeks',
       categories: '',
     },
@@ -59,7 +58,6 @@ const AddLearningPlan = () => {
         id: uuidv4(), 
         order: newOrder, 
         title: '', 
-        description: '', 
         completed: false
       }
     ]);
@@ -105,8 +103,8 @@ const AddLearningPlan = () => {
   const onSubmit = async (data: LearningPlanFormValues) => {
     try {
       // Validation
-      if (steps.some(step => !step.title || !step.description)) {
-        toast.error('Please fill in all step titles and descriptions');
+      if (steps.some(step => !step.title)) {
+        toast.error('Please fill in all step titles');
         return;
       }
 
@@ -132,7 +130,7 @@ const AddLearningPlan = () => {
           order: Number(step.order) // Ensure order is a number
         })),
         categories: categoriesArray,
-        difficulty: data.difficulty,
+        courseType: data.courseType,
         estimatedDuration: data.estimatedDuration
       };
 
@@ -227,10 +225,10 @@ const AddLearningPlan = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormField
                       control={form.control}
-                      name="difficulty"
+                      name="courseType"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Difficulty</FormLabel>
+                          <FormLabel>Course Type</FormLabel>
                           <FormControl>
                             <select 
                               className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -253,7 +251,16 @@ const AddLearningPlan = () => {
                         <FormItem>
                           <FormLabel>Estimated Duration</FormLabel>
                           <FormControl>
-                            <Input placeholder="e.g., 2 weeks, 1 month" {...field} />
+                            <select 
+                              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                              {...field}
+                            >
+                              <option value="1 week">1 week</option>
+                              <option value="2 weeks">2 weeks</option>
+                              <option value="3 weeks">3 weeks</option>
+                              <option value="1 month">1 month</option>
+                              <option value="2 months">2 months</option>
+                            </select>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -352,16 +359,6 @@ const AddLearningPlan = () => {
                             value={step.title}
                             onChange={(e) => updateStep(step.id, 'title', e.target.value)}
                             placeholder="Enter step title"
-                          />
-                        </div>
-                        
-                        <div>
-                          <label className="text-sm font-medium">Step Description</label>
-                          <Textarea
-                            value={step.description}
-                            onChange={(e) => updateStep(step.id, 'description', e.target.value)}
-                            placeholder="Describe what to learn in this step"
-                            className="min-h-[80px]"
                           />
                         </div>
                       </div>
