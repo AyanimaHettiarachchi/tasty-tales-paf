@@ -257,8 +257,9 @@ const RecipeDetail = () => {
             )}
           </div>
           
-          
+
           {/* Recipes Content */}
+          
           <Tabs defaultValue="ingredients" className="mb-12">
             <TabsList className="mb-4">
               <TabsTrigger value="ingredients">Ingredients</TabsTrigger>
@@ -333,6 +334,7 @@ const RecipeDetail = () => {
           </Tabs>
           
           {/* Similar Recipes */}
+
           <div className="mb-12">
             <h2 className="text-2xl font-bold mb-6">You Might Also Like</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
