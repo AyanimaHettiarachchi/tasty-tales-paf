@@ -257,6 +257,7 @@ const RecipeDetail = () => {
             )}
           </div>
           
+          
           {/* Recipes Content */}
           <Tabs defaultValue="ingredients" className="mb-12">
             <TabsList className="mb-4">
