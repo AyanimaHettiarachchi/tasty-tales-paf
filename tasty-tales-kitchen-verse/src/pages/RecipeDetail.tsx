@@ -13,8 +13,11 @@ import { toast } from 'sonner';
 import { Recipe } from '@/types';
 
 // TODO: Replace this with actual user ID from authentication system
+
 const getCurrentUserId = () => {
+
   // Example: Fetch user ID from localStorage, context, or auth service
+
   // For now, using a placeholder; replace with your auth logic
   return localStorage.getItem('userId') || 'current-user-id';
 };
@@ -226,6 +229,7 @@ const RecipeDetail = () => {
           </div>
           
           {/* Recipe Images */}
+          
           <div className="mb-8">
             <AspectRatio ratio={16 / 9} className="bg-gray-100 rounded-lg overflow-hidden mb-2">
               <img 
@@ -253,7 +257,7 @@ const RecipeDetail = () => {
             )}
           </div>
           
-          {/* Recipe Content */}
+          {/* Recipes Content */}
           <Tabs defaultValue="ingredients" className="mb-12">
             <TabsList className="mb-4">
               <TabsTrigger value="ingredients">Ingredients</TabsTrigger>
