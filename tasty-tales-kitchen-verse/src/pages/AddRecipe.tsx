@@ -193,9 +193,16 @@ const AddRecipe = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div 
+      className="min-h-screen flex flex-col w-full h-full absolute top-0 left-0" 
+      style={{ 
+        backgroundImage: 'url(https://images.unsplash.com/photo-1490818387583-1baba5e638f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80)', 
+        backgroundSize: 'cover', 
+        backgroundPosition: 'center' 
+      }}
+    >
       <Header />
-      <main className="flex-grow bg-gray-50 py-8">
+      <main className="flex-grow py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto bg-white rounded-md shadow-sm p-6 md:p-8">
             <h1 className="text-3xl font-bold mb-8 text-center">Add New Recipe</h1>
