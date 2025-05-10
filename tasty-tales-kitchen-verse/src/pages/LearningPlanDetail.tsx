@@ -100,6 +100,7 @@ const LearningPlanDetail = () => {
       : 0;
   };
   
+  
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col">
