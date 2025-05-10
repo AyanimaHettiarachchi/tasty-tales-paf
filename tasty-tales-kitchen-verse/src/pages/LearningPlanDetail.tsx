@@ -99,7 +99,7 @@ const LearningPlanDetail = () => {
       ? Math.round((completedSteps / learningPlan.steps.length) * 100) 
       : 0;
   };
-  
+
   
   if (loading) {
     return (
@@ -131,6 +131,7 @@ const LearningPlanDetail = () => {
         <Footer />
       </div>
     );
+    
   }
   
   const progress = calculateProgress();
