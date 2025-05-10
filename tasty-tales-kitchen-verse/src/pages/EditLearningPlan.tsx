@@ -73,6 +73,7 @@ const EditLearningPlan = () => {
         categories: plan.categories.join(', '),
       });
 
+
       // Set steps
       setSteps(plan.steps);
 
