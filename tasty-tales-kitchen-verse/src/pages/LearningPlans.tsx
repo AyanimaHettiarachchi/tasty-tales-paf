@@ -35,7 +35,7 @@ const LearningPlans = () => {
       setLoading(false);
     }
   };
-  
+
 
   // Filter learning plans based on search query
   const filteredPlans = learningPlans.filter(plan => 
@@ -157,6 +157,7 @@ const LearningPlans = () => {
               <p className="text-gray-500">Loading learning plans...</p>
             </div>
           )}
+          
 
           {/* Error State */}
           {error && (
