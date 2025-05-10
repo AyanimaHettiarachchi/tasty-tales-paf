@@ -157,7 +157,7 @@ const LearningPlans = () => {
               <p className="text-gray-500">Loading learning plans...</p>
             </div>
           )}
-          
+
 
           {/* Error State */}
           {error && (
@@ -185,6 +185,7 @@ const LearningPlans = () => {
               </Button>
             </div>
           )}
+          
           
           {/* Learning Plans List */}
           {!loading && !error && filteredPlans.length > 0 && (
