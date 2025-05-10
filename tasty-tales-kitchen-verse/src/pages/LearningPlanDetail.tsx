@@ -66,6 +66,7 @@ const LearningPlanDetail = () => {
       [stepId]: !prev[stepId]
     }));
   };
+
   
   const toggleStepCompletion = async (step: LearningStep) => {
     if (!learningPlan) return;
