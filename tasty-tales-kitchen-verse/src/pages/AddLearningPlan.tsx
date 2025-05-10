@@ -63,6 +63,7 @@ const AddLearningPlan = () => {
     ]);
   };
 
+
   const removeStep = (id: string) => {
     if (steps.length > 1) {
       const updatedSteps = steps.filter(step => step.id !== id);
