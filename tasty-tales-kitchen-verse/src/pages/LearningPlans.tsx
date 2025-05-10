@@ -36,6 +36,7 @@ const LearningPlans = () => {
     }
   };
 
+
   // Filter learning plans based on search query
   const filteredPlans = learningPlans.filter(plan => 
     plan.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -157,6 +158,7 @@ const LearningPlans = () => {
             </div>
           )}
 
+
           {/* Error State */}
           {error && (
             <div className="text-center py-12">
@@ -183,6 +185,7 @@ const LearningPlans = () => {
               </Button>
             </div>
           )}
+          
           
           {/* Learning Plans List */}
           {!loading && !error && filteredPlans.length > 0 && (

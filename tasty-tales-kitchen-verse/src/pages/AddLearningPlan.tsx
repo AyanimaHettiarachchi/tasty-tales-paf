@@ -63,6 +63,7 @@ const AddLearningPlan = () => {
     ]);
   };
 
+
   const removeStep = (id: string) => {
     if (steps.length > 1) {
       const updatedSteps = steps.filter(step => step.id !== id);
@@ -83,6 +84,8 @@ const AddLearningPlan = () => {
     );
   };
 
+
+
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -99,6 +102,7 @@ const AddLearningPlan = () => {
   const removeImage = () => {
     setImageUrl('');
   };
+  
 
   const onSubmit = async (data: LearningPlanFormValues) => {
     try {

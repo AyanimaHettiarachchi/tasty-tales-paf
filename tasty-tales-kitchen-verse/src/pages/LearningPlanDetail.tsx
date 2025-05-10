@@ -66,6 +66,7 @@ const LearningPlanDetail = () => {
       [stepId]: !prev[stepId]
     }));
   };
+
   
   const toggleStepCompletion = async (step: LearningStep) => {
     if (!learningPlan) return;
@@ -98,6 +99,7 @@ const LearningPlanDetail = () => {
       ? Math.round((completedSteps / learningPlan.steps.length) * 100) 
       : 0;
   };
+
   
   if (loading) {
     return (
@@ -129,6 +131,7 @@ const LearningPlanDetail = () => {
         <Footer />
       </div>
     );
+    
   }
   
   const progress = calculateProgress();
