@@ -35,6 +35,7 @@ const LearningPlans = () => {
       setLoading(false);
     }
   };
+  
 
   // Filter learning plans based on search query
   const filteredPlans = learningPlans.filter(plan => 
