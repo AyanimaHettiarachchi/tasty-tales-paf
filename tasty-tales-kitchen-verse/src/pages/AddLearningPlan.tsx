@@ -84,7 +84,7 @@ const AddLearningPlan = () => {
     );
   };
 
-  
+
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -102,6 +102,7 @@ const AddLearningPlan = () => {
   const removeImage = () => {
     setImageUrl('');
   };
+  
 
   const onSubmit = async (data: LearningPlanFormValues) => {
     try {
