@@ -102,6 +102,8 @@ const AddLearningPlan = () => {
   const removeImage = () => {
     setImageUrl('');
   };
+
+  
   
 
   const onSubmit = async (data: LearningPlanFormValues) => {
