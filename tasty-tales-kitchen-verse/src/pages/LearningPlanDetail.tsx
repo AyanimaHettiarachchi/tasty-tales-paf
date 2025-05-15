@@ -135,7 +135,6 @@ const LearningPlanDetail = () => {
   }
 
   
-  
   const progress = calculateProgress();
   
   return (
