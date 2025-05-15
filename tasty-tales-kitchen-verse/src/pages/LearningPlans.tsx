@@ -186,7 +186,6 @@ const LearningPlans = () => {
             </div>
           )}
 
-          
             
           
           {/* Learning Plans List */}
