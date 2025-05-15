@@ -185,7 +185,7 @@ const LearningPlans = () => {
               </Button>
             </div>
           )}
-          
+            
           
           {/* Learning Plans List */}
           {!loading && !error && filteredPlans.length > 0 && (
