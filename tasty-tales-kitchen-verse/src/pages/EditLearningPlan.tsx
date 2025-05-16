@@ -53,6 +53,7 @@ const EditLearningPlan = () => {
       categories: '',
     },
   });
+  
 
   useEffect(() => {
     fetchLearningPlan();
