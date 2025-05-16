@@ -139,6 +139,7 @@ const EditRecipe = () => {
     ]);
   };
 
+  // Update a step's field
   const updateStep = (index: number, field: keyof Step, value: string) => {
     setSteps(prev =>
       prev.map((step, i) =>
@@ -147,6 +148,7 @@ const EditRecipe = () => {
     );
   };
 
+  // Remove a step by index
   const removeStep = (index: number) => {
     setSteps(prev => prev.filter((_, i) => i !== index));
   };
