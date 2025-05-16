@@ -28,6 +28,7 @@ type LearningPlanFormValues = {
   categories: string;
 };
 
+
 const AddLearningPlan = () => {
   const navigate = useNavigate();
   const [steps, setSteps] = useState([
@@ -76,6 +77,7 @@ const AddLearningPlan = () => {
     }
   };
 
+
   const updateStep = (stepId: string, field: string, value: string) => {
     setSteps(
       steps.map(step => 
@@ -99,9 +101,12 @@ const AddLearningPlan = () => {
     reader.readAsDataURL(file);
   };
 
+
   const removeImage = () => {
     setImageUrl('');
   };
+
+  
   
 
   const onSubmit = async (data: LearningPlanFormValues) => {

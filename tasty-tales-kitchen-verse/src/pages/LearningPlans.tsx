@@ -16,6 +16,7 @@ const LearningPlans = () => {
   const [learningPlans, setLearningPlans] = useState<LearningPlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
 
   useEffect(() => {
     fetchLearningPlans();
@@ -65,6 +66,7 @@ const LearningPlans = () => {
             </div>
           </div>
         </div>
+
         
         {/* Search and Filter */}
         <div className="container mx-auto px-4 py-8">
@@ -185,7 +187,8 @@ const LearningPlans = () => {
               </Button>
             </div>
           )}
-          
+
+            
           
           {/* Learning Plans List */}
           {!loading && !error && filteredPlans.length > 0 && (
