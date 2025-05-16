@@ -28,6 +28,7 @@ type LearningPlanFormValues = {
   categories: string;
 };
 
+
 const EditLearningPlan = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -71,6 +72,7 @@ const EditLearningPlan = () => {
         estimatedDuration: plan.estimatedDuration,
         categories: plan.categories.join(', '),
       });
+
 
       // Set steps
       setSteps(plan.steps);
