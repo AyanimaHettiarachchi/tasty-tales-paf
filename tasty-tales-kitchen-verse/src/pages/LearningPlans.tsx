@@ -65,7 +65,7 @@ const LearningPlans = () => {
             </div>
           </div>
         </div>
-        
+
         
         {/* Search and Filter */}
         <div className="container mx-auto px-4 py-8">
