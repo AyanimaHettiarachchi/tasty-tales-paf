@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/form';
 import { Recipe, Ingredient, Step } from '@/types';
 
+// Define the shape of form data
 interface RecipeFormValues {
   title: string;
   description: string;
@@ -31,8 +32,11 @@ interface RecipeFormValues {
   tags: string;
 }
 
+// Component for adding a new recipe
 const AddRecipe = () => {
   const navigate = useNavigate();
+
+  // State for managing image URLs, ingredients, and steps
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [steps, setSteps] = useState<Step[]>([]);
@@ -50,10 +54,12 @@ const AddRecipe = () => {
     },
   });
 
+  // Handle image file selection and convert to data URLs
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
 
+    // Limit to 3 images
     if (imageUrls.length + files.length > 3) {
       toast.error('You can only upload up to 3 images.');
       return;
@@ -70,6 +76,7 @@ const AddRecipe = () => {
     });
   };
 
+  // Remove an image from the imageUrls state
   const removeImage = (index: number) => {
     setImageUrls(prev => prev.filter((_, i) => i !== index));
   };
@@ -142,6 +149,7 @@ const AddRecipe = () => {
       imageUrl: step.imageUrl || '',
     }));
 
+    // Construct recipe object
     const recipe: Partial<Recipe> = {
       title: data.title,
       description: data.description,
@@ -176,6 +184,7 @@ const AddRecipe = () => {
     };
 
     try {
+      // Send POST request to create recipe
       console.log('Creating recipe:', JSON.stringify(recipe, null, 2));
       const response = await axios.post(`http://localhost:8081/api/recipes`, recipe, {
         headers: {
@@ -186,6 +195,7 @@ const AddRecipe = () => {
       toast.success('Recipe created successfully!');
       navigate(`/recipes/${response.data.id}`);
     } catch (error: any) {
+      // Handle API errors
       const errorMessage = error.response?.data || error.message;
       console.error('Error creating recipe:', errorMessage);
       toast.error(`Failed to create recipe: ${errorMessage}`);
@@ -194,17 +204,21 @@ const AddRecipe = () => {
 
   return (
     <div 
-      className="min-h-screen flex flex-col w-full h-full absolute top-0 left-0" 
+      className="min-h-screen flex flex-col w-full h-full absolute top-0 left-0 z-[-1]" 
       style={{ 
         backgroundImage: 'url(https://images.unsplash.com/photo-1490818387583-1baba5e638f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80)', 
         backgroundSize: 'cover', 
-        backgroundPosition: 'center' 
+        backgroundPosition: 'center', 
+        backgroundRepeat: 'no-repeat', 
+        backgroundAttachment: 'fixed', // Keeps the background fixed while scrolling
+        
       }}
     >
       <Header />
       <main className="flex-grow py-8">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto bg-white rounded-md shadow-sm p-6 md:p-8">
+          {/* Added bg-opacity-90 to make the content area slightly transparent */}
+          <div className="max-w-3xl mx-auto bg-white bg-opacity-90 rounded-md shadow-sm p-6 md:p-8">
             <h1 className="text-3xl font-bold mb-8 text-center">Add New Recipe</h1>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -215,7 +229,7 @@ const AddRecipe = () => {
                     name="title"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Title :</FormLabel>
+                        <FormLabel>Title:</FormLabel>
                         <FormControl>
                           <Input placeholder="e.g., Chocolate Cake" {...field} />
                         </FormControl>
@@ -228,7 +242,7 @@ const AddRecipe = () => {
                     name="description"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Description :</FormLabel>
+                        <FormLabel>Description:</FormLabel>
                         <FormControl>
                           <Textarea
                             placeholder="Describe your recipe..."
@@ -242,10 +256,10 @@ const AddRecipe = () => {
                   />
                   <FormField
                     control={form.control}
-                    name="preparationTime"
+                    name="preparationTime" // Fixed field name to match RecipeFormValues
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Preparation Time (minutes) :</FormLabel>
+                        <FormLabel>Preparation Time (minutes):</FormLabel>
                         <FormControl>
                           <Input type="number" placeholder="e.g., 15" {...field} />
                         </FormControl>
@@ -258,7 +272,7 @@ const AddRecipe = () => {
                     name="cookingTime"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Cooking Time (minutes) :</FormLabel>
+                        <FormLabel>Cooking Time (minutes):</FormLabel>
                         <FormControl>
                           <Input type="number" placeholder="e.g., 30" {...field} />
                         </FormControl>
@@ -271,7 +285,7 @@ const AddRecipe = () => {
                     name="servings"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Servings :</FormLabel>
+                        <FormLabel>Servings:</FormLabel>
                         <FormControl>
                           <Input type="number" placeholder="e.g., 4" {...field} />
                         </FormControl>
@@ -284,7 +298,7 @@ const AddRecipe = () => {
                     name="difficulty"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Difficulty :</FormLabel>
+                        <FormLabel>Difficulty:</FormLabel>
                         <FormControl>
                           <select
                             {...field}
@@ -304,7 +318,7 @@ const AddRecipe = () => {
                     name="categories"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Categories :</FormLabel>
+                        <FormLabel>Categories:</FormLabel>
                         <FormControl>
                           <select
                             multiple
@@ -335,7 +349,7 @@ const AddRecipe = () => {
                     name="tags"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Tags :</FormLabel>
+                        <FormLabel>Tags:</FormLabel>
                         <FormControl>
                           <Input
                             placeholder="e.g., Quick, Healthy (comma separated)"
@@ -348,7 +362,7 @@ const AddRecipe = () => {
                   />
                 </div>
                 <div className="space-y-4">
-                  <h2 className="text-xl font-semibold border-b pb-2">Images :</h2>
+                  <h2 className="text-xl font-semibold border-b pb-2">Images:</h2>
                   <div className="space-y-2">
                     <label className="block text-sm font-medium">
                       Recipe Images (up to 3)
@@ -388,7 +402,7 @@ const AddRecipe = () => {
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h2 className="text-xl font-semibold border-b pb-2">Ingredients :</h2>
+                  <h2 className="text-xl font-semibold border-b pb-2">Ingredients:</h2>
                   {ingredients.length === 0 && (
                     <p className="text-gray-500">No ingredients added yet.</p>
                   )}
@@ -439,7 +453,7 @@ const AddRecipe = () => {
                   </Button>
                 </div>
                 <div className="space-y-4">
-                  <h2 className="text-xl font-semibold border-b pb-2">Steps :</h2>
+                  <h2 className="text-xl font-semibold border-b pb-2">Steps:</h2>
                   {steps.length === 0 && (
                     <p className="text-gray-500">No steps added yet.</p>
                   )}

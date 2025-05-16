@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/form';
 import { Recipe, Ingredient, Step } from '@/types';
 
+// Form values 
 interface RecipeFormValues {
   title: string;
   description: string;
@@ -32,13 +33,14 @@ interface RecipeFormValues {
 }
 
 const EditRecipe = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>(); // Get recipe ID from URL
   const navigate = useNavigate();
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [steps, setSteps] = useState<Step[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Initialize form with default values
   const form = useForm<RecipeFormValues>({
     defaultValues: {
       title: '',
@@ -59,6 +61,7 @@ const EditRecipe = () => {
       try {
         const response = await axios.get(`http://localhost:8081/api/recipes/${id}`);
         const recipe: Recipe = response.data;
+        // Recipe data
         form.reset({
           title: recipe.title,
           description: recipe.description,
@@ -86,6 +89,7 @@ const EditRecipe = () => {
     const files = e.target.files;
     if (!files) return;
 
+    // Limit to 3 images
     if (imageUrls.length + files.length > 3) {
       toast.error('You can only upload up to 3 images.');
       return;
@@ -106,6 +110,7 @@ const EditRecipe = () => {
     setImageUrls(prev => prev.filter((_, i) => i !== index));
   };
 
+  // Add a new ingredient with a unique ID
   const addIngredient = () => {
     setIngredients(prev => [
       ...prev,
