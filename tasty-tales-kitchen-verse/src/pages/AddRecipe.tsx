@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/form';
 import { Recipe, Ingredient, Step } from '@/types';
 
+// Define the shape of form data
 interface RecipeFormValues {
   title: string;
   description: string;
@@ -31,8 +32,11 @@ interface RecipeFormValues {
   tags: string;
 }
 
+// Component for adding a new recipe
 const AddRecipe = () => {
   const navigate = useNavigate();
+  
+  // State for managing image URLs, ingredients, and steps
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [steps, setSteps] = useState<Step[]>([]);
