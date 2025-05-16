@@ -42,6 +42,7 @@ const EditLearningPlan = () => {
       completed: false
     }
   ]);
+  
   const [imageUrl, setImageUrl] = useState('');
 
   const form = useForm<LearningPlanFormValues>({
@@ -53,7 +54,7 @@ const EditLearningPlan = () => {
       categories: '',
     },
   });
-  
+
 
   useEffect(() => {
     fetchLearningPlan();
