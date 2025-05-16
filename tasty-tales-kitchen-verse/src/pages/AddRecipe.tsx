@@ -149,6 +149,7 @@ const AddRecipe = () => {
       imageUrl: step.imageUrl || '',
     }));
 
+    // Construct recipe object
     const recipe: Partial<Recipe> = {
       title: data.title,
       description: data.description,
