@@ -98,6 +98,7 @@ const AddLearningPlan = () => {
     };
     reader.readAsDataURL(file);
   };
+  
 
   const removeImage = () => {
     setImageUrl('');
