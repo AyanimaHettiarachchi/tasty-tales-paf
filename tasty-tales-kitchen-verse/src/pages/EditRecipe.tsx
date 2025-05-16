@@ -126,10 +126,12 @@ const EditRecipe = () => {
     );
   };
 
+  // Remove an ingredient by index
   const removeIngredient = (index: number) => {
     setIngredients(prev => prev.filter((_, i) => i !== index));
   };
 
+  // Add a new step with a unique ID and sequential order
   const addStep = () => {
     setSteps(prev => [
       ...prev,
