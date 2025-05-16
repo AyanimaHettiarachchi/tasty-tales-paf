@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/form';
 import { Recipe, Ingredient, Step } from '@/types';
 
+// Form values 
 interface RecipeFormValues {
   title: string;
   description: string;
@@ -32,13 +33,14 @@ interface RecipeFormValues {
 }
 
 const EditRecipe = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>(); // Get recipe ID from URL
   const navigate = useNavigate();
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [steps, setSteps] = useState<Step[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Initialize form with default values
   const form = useForm<RecipeFormValues>({
     defaultValues: {
       title: '',
