@@ -184,6 +184,7 @@ const AddRecipe = () => {
     };
 
     try {
+      // Send POST request to create recipe
       console.log('Creating recipe:', JSON.stringify(recipe, null, 2));
       const response = await axios.post(`http://localhost:8081/api/recipes`, recipe, {
         headers: {
@@ -194,6 +195,7 @@ const AddRecipe = () => {
       toast.success('Recipe created successfully!');
       navigate(`/recipes/${response.data.id}`);
     } catch (error: any) {
+      // Handle API errors
       const errorMessage = error.response?.data || error.message;
       console.error('Error creating recipe:', errorMessage);
       toast.error(`Failed to create recipe: ${errorMessage}`);
