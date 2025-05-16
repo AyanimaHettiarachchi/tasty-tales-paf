@@ -153,7 +153,9 @@ const EditRecipe = () => {
     setSteps(prev => prev.filter((_, i) => i !== index));
   };
 
+  // Handle form submission
   const onSubmit = async (data: RecipeFormValues) => {
+
     if (!data.title || !data.description) {
       toast.error('Please fill in title and description.');
       return;
@@ -169,6 +171,7 @@ const EditRecipe = () => {
       return;
     }
 
+    // Validate image URLs
     const validIngredients = ingredients.map(ing => ({
       id: ing.id,
       name: ing.name || '',
@@ -218,6 +221,7 @@ const EditRecipe = () => {
     };
 
     try {
+      
       console.log('Updating recipe:', JSON.stringify(recipe, null, 2));
       const response = await axios.put(`http://localhost:8081/api/recipes/${id}`, recipe, {
         headers: {
