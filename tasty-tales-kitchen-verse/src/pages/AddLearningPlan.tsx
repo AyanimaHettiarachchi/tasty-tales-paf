@@ -75,6 +75,7 @@ const AddLearningPlan = () => {
       setSteps(reorderedSteps);
     }
   };
+  
 
   const updateStep = (stepId: string, field: string, value: string) => {
     setSteps(
@@ -98,7 +99,7 @@ const AddLearningPlan = () => {
     };
     reader.readAsDataURL(file);
   };
-  
+
 
   const removeImage = () => {
     setImageUrl('');
