@@ -28,6 +28,7 @@ type LearningPlanFormValues = {
   categories: string;
 };
 
+
 const AddLearningPlan = () => {
   const navigate = useNavigate();
   const [steps, setSteps] = useState([
@@ -75,7 +76,7 @@ const AddLearningPlan = () => {
       setSteps(reorderedSteps);
     }
   };
-  
+
 
   const updateStep = (stepId: string, field: string, value: string) => {
     setSteps(
