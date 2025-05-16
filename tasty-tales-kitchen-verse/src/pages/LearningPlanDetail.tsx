@@ -18,6 +18,7 @@ const LearningPlanDetail = () => {
   const [error, setError] = useState<string | null>(null);
   const [expandedSteps, setExpandedSteps] = useState<Record<string, boolean>>({});
   
+  
   useEffect(() => {
     fetchLearningPlan();
   }, [id]);
@@ -89,7 +90,7 @@ const LearningPlanDetail = () => {
       toast.error('Failed to update progress');
     }
   };
-  
+
   
   // Calculate progress
   const calculateProgress = () => {
