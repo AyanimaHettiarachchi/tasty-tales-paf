@@ -35,7 +35,7 @@ interface RecipeFormValues {
 // Component for adding a new recipe
 const AddRecipe = () => {
   const navigate = useNavigate();
-  
+
   // State for managing image URLs, ingredients, and steps
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
@@ -54,10 +54,12 @@ const AddRecipe = () => {
     },
   });
 
+  // Handle image file selection and convert to data URLs
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
 
+    // Limit to 3 images
     if (imageUrls.length + files.length > 3) {
       toast.error('You can only upload up to 3 images.');
       return;
@@ -74,6 +76,7 @@ const AddRecipe = () => {
     });
   };
 
+  // Remove an image from the imageUrls state
   const removeImage = (index: number) => {
     setImageUrls(prev => prev.filter((_, i) => i !== index));
   };
