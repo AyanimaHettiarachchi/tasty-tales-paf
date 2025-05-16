@@ -90,6 +90,7 @@ const LearningPlanDetail = () => {
     }
   };
   
+  
   // Calculate progress
   const calculateProgress = () => {
     if (!learningPlan) return 0;
@@ -112,7 +113,7 @@ const LearningPlanDetail = () => {
       </div>
     );
   }
-  
+
   
   if (error || !learningPlan) {
     return (
