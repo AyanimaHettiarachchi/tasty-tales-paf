@@ -175,6 +175,7 @@ const LearningPlans = () => {
             </div>
           )}
 
+          
           {/* Empty State */}
           {!loading && !error && filteredPlans.length === 0 && (
             <div className="text-center py-12">
@@ -190,7 +191,7 @@ const LearningPlans = () => {
 
             
           
-          {/* Learning Plans List */}
+         {/* Learning Plans List */}
           {!loading && !error && filteredPlans.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {filteredPlans.map((plan) => (
