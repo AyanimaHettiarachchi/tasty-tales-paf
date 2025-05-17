@@ -161,7 +161,7 @@ const LearningPlans = () => {
           )}
 
 
-          {/* Error State */}
+        {/* Error State */}
           {error && (
             <div className="text-center py-12">
               <p className="text-red-500">{error}</p>
