@@ -75,8 +75,7 @@ const [imageUrl, setImageUrl] = useState('');
         categories: plan.categories.join(', '),
       });
 
- 
-      // Set steps
+ // Set steps
       setSteps(plan.steps);
 
       // Set image URL
