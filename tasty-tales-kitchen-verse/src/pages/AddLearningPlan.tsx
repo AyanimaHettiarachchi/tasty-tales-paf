@@ -28,7 +28,6 @@ type LearningPlanFormValues = {
   categories: string;
 };
 
-
 const AddLearningPlan = () => {
   const navigate = useNavigate();
   const [steps, setSteps] = useState([
@@ -64,11 +63,9 @@ const AddLearningPlan = () => {
     ]);
   };
 
-
   const removeStep = (id: string) => {
     if (steps.length > 1) {
       const updatedSteps = steps.filter(step => step.id !== id);
-      // Reorder steps
       const reorderedSteps = updatedSteps.map((step, index) => ({
         ...step,
         order: index + 1,
@@ -77,16 +74,17 @@ const AddLearningPlan = () => {
     }
   };
 
-
   const updateStep = (stepId: string, field: string, value: string) => {
+    // Validate step title: only letters and spaces allowed
+    if (field === 'title' && value && !/^[a-zA-Z\s]*$/.test(value)) {
+      return;
+    }
     setSteps(
       steps.map(step => 
         step.id === stepId ? { ...step, [field]: value } : step
       )
     );
   };
-
-
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -101,26 +99,19 @@ const AddLearningPlan = () => {
     reader.readAsDataURL(file);
   };
 
-
   const removeImage = () => {
     setImageUrl('');
   };
 
-  
-  
-
   const onSubmit = async (data: LearningPlanFormValues) => {
     try {
-      // Validation
       if (steps.some(step => !step.title)) {
         toast.error('Please fill in all step titles');
         return;
       }
 
-      // Process categories
       const categoriesArray = data.categories.split(',').map(c => c.trim()).filter(Boolean);
 
-      // Create learning plan object
       const learningPlan = {
         title: data.title,
         description: data.description,
@@ -136,7 +127,7 @@ const AddLearningPlan = () => {
         },
         steps: steps.map(step => ({
           ...step,
-          order: Number(step.order) // Ensure order is a number
+          order: Number(step.order)
         })),
         categories: categoriesArray,
         courseType: data.courseType,
@@ -146,15 +137,12 @@ const AddLearningPlan = () => {
       console.log('Sending request to:', '/api/learning-plans');
       console.log('Request data:', JSON.stringify(learningPlan, null, 2));
 
-      // Send to backend
       const response = await api.post('/api/learning-plans', learningPlan);
       
       console.log('Response:', response.data);
 
-      // Show success message
       toast.success('Learning plan created successfully!');
       
-      // Navigate to the newly created learning plan
       navigate(`/learning-plans/${response.data.id}`);
     } catch (error: any) {
       console.error('Error creating learning plan:', error);
@@ -169,16 +157,11 @@ const AddLearningPlan = () => {
         }
       });
       
-      // More detailed error message
       if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
         toast.error(`Server error: ${error.response.data?.message || error.response.statusText || 'Failed to create learning plan'}`);
       } else if (error.request) {
-        // The request was made but no response was received
         toast.error('No response from server. Please check if the backend is running.');
       } else {
-        // Something happened in setting up the request that triggered an Error
         toast.error('Failed to create learning plan. Please try again.');
       }
     }
@@ -195,13 +178,19 @@ const AddLearningPlan = () => {
             
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                {/* Basic Info */}
                 <div className="space-y-4">
                   <h2 className="text-xl font-semibold border-b pb-2">Basic Information</h2>
                   
                   <FormField
                     control={form.control}
                     name="title"
+                    rules={{
+                      required: 'Plan title is早required',
+                      pattern: {
+                        value: /^[a-zA-Z\s]*$/,
+                        message: 'Only letters and spaces are allowed'
+                      }
+                    }}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Plan Title</FormLabel>
@@ -216,6 +205,14 @@ const AddLearningPlan = () => {
                   <FormField
                     control={form.control}
                     name="description"
+                    rules={{
+                      required: 'Description is required',
+                      validate: {
+                        minWords: (value) =>
+                          value.trim().split(/\s+/).length >= 10 ||
+                          'Description must contain at least 10 words',
+                      },
+                    }}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Description</FormLabel>
@@ -280,6 +277,13 @@ const AddLearningPlan = () => {
                   <FormField
                     control={form.control}
                     name="categories"
+                    rules={{
+                      required: 'Categories are required',
+                      pattern: {
+                        value: /^[a-zA-Z\s,]*$/,
+                        message: 'Only letters, spaces, and commas are allowed'
+                      }
+                    }}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Categories</FormLabel>
@@ -292,7 +296,6 @@ const AddLearningPlan = () => {
                   />
                 </div>
                 
-                {/* Cover Image */}
                 <div className="space-y-4">
                   <h2 className="text-xl font-semibold border-b pb-2">Cover Image</h2>
                   
@@ -330,7 +333,6 @@ const AddLearningPlan = () => {
                   </div>
                 </div>
                 
-                {/* Learning Steps */}
                 <div className="space-y-4">
                   <div className="flex justify-between items-center border-b pb-2">
                     <h2 className="text-xl font-semibold">Learning Steps</h2>
@@ -369,13 +371,15 @@ const AddLearningPlan = () => {
                             onChange={(e) => updateStep(step.id, 'title', e.target.value)}
                             placeholder="Enter step title"
                           />
+                          {step.title && !/^[a-zA-Z\s]*$/.test(step.title) && (
+                            <p className="text-sm text-red-500 mt-1">Only letters and spaces are allowed</p>
+                          )}
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
                 
-                {/* Submit Button */}
                 <div className="flex justify-end">
                   <Button 
                     type="submit" 
