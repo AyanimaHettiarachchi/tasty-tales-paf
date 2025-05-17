@@ -61,6 +61,7 @@ const LearningPlanDetail = () => {
     }
   };
   
+  
   const toggleStepExpand = (stepId: string) => {
     setExpandedSteps(prev => ({
       ...prev,
