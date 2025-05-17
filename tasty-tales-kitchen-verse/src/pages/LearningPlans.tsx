@@ -38,7 +38,7 @@ const LearningPlans = () => {
   };
 
 
-  // Filter learning plans based on search query
+// Filter learning plans based on search query
   const filteredPlans = learningPlans.filter(plan => 
     plan.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     plan.description.toLowerCase().includes(searchQuery.toLowerCase())
