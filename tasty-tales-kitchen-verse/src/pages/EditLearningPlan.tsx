@@ -43,8 +43,7 @@ const EditLearningPlan = () => {
     }
   ]);
   
-
-  const [imageUrl, setImageUrl] = useState('');
+const [imageUrl, setImageUrl] = useState('');
 
   const form = useForm<LearningPlanFormValues>({
     defaultValues: {
