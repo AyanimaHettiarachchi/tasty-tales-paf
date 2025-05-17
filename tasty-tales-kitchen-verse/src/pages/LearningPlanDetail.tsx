@@ -46,7 +46,7 @@ const LearningPlanDetail = () => {
     }
   };
   
-  const handleDelete = async () => {
+ const handleDelete = async () => {
     if (!window.confirm('Are you sure you want to delete this learning plan?')) {
       return;
     }
