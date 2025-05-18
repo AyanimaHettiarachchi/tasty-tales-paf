@@ -43,8 +43,7 @@ const EditLearningPlan = () => {
     }
   ]);
   
-
-  const [imageUrl, setImageUrl] = useState('');
+const [imageUrl, setImageUrl] = useState('');
 
   const form = useForm<LearningPlanFormValues>({
     defaultValues: {
@@ -76,8 +75,7 @@ const EditLearningPlan = () => {
         categories: plan.categories.join(', '),
       });
 
- 
-      // Set steps
+ // Set steps
       setSteps(plan.steps);
 
       // Set image URL
@@ -92,8 +90,9 @@ const EditLearningPlan = () => {
       setLoading(false);
     }
   };
+  
 
-  const addStep = () => {
+const addStep = () => {
     const newOrder = steps.length + 1;
     setSteps([
       ...steps, 

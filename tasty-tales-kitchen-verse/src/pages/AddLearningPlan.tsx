@@ -133,6 +133,7 @@ const AddLearningPlan = () => {
         courseType: data.courseType,
         estimatedDuration: data.estimatedDuration
       };
+      
 
       console.log('Sending request to:', '/api/learning-plans');
       console.log('Request data:', JSON.stringify(learningPlan, null, 2));
@@ -167,7 +168,8 @@ const AddLearningPlan = () => {
     }
   };
 
-  return (
+  
+return (
     <div className="min-h-screen flex flex-col">
       <Header />
       

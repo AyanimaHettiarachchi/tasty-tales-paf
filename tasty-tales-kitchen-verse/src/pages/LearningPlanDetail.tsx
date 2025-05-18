@@ -46,7 +46,7 @@ const LearningPlanDetail = () => {
     }
   };
   
-  const handleDelete = async () => {
+ const handleDelete = async () => {
     if (!window.confirm('Are you sure you want to delete this learning plan?')) {
       return;
     }
@@ -91,8 +91,7 @@ const LearningPlanDetail = () => {
     }
   };
 
-  
-  // Calculate progress
+   // Calculate progress
   const calculateProgress = () => {
     if (!learningPlan) return 0;
     

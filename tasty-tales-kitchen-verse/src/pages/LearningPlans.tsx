@@ -38,7 +38,7 @@ const LearningPlans = () => {
   };
 
 
-  // Filter learning plans based on search query
+// Filter learning plans based on search query
   const filteredPlans = learningPlans.filter(plan => 
     plan.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     plan.description.toLowerCase().includes(searchQuery.toLowerCase())
@@ -68,7 +68,7 @@ const LearningPlans = () => {
         </div>
 
         
-        {/* Search and Filter */}
+      {/* Search and Filter */}
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-col md:flex-row gap-4 mb-8">
             <div className="relative flex-grow">
@@ -161,7 +161,7 @@ const LearningPlans = () => {
           )}
 
 
-          {/* Error State */}
+        {/* Error State */}
           {error && (
             <div className="text-center py-12">
               <p className="text-red-500">{error}</p>
@@ -175,6 +175,7 @@ const LearningPlans = () => {
             </div>
           )}
 
+          
           {/* Empty State */}
           {!loading && !error && filteredPlans.length === 0 && (
             <div className="text-center py-12">
@@ -190,7 +191,7 @@ const LearningPlans = () => {
 
             
           
-          {/* Learning Plans List */}
+      {/* Learning Plans List */}
           {!loading && !error && filteredPlans.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {filteredPlans.map((plan) => (
