@@ -296,6 +296,17 @@ const AddRecipe = () => {
                           <FormMessage />
                         </FormItem>
                       )}
+                      rules={{
+                        required: 'Preparation time is required',
+                        min: {
+                          value: 1,
+                          message: 'Preparation time must be at least 1 minute'
+                        },
+                        max: {
+                          value: 1440,
+                          message: 'Preparation time cannot exceed 24 hours (1440 minutes)'
+                        }
+                      }}
                     />
                     <FormField
                       control={form.control}
@@ -314,6 +325,17 @@ const AddRecipe = () => {
                           <FormMessage />
                         </FormItem>
                       )}
+                      rules={{
+                        required: 'Cooking time is required',
+                        min: {
+                          value: 0,
+                          message: 'Cooking time cannot be negative'
+                        },
+                        max: {
+                          value: 1440,
+                          message: 'Cooking time cannot exceed 24 hours (1440 minutes)'
+                        }
+                      }}
                     />
                     <FormField
                       control={form.control}
@@ -332,6 +354,17 @@ const AddRecipe = () => {
                           <FormMessage />
                         </FormItem>
                       )}
+                      rules={{
+                        required: 'Servings is required',
+                        min: {
+                          value: 1,
+                          message: 'Must serve at least 1 person'
+                        },
+                        max: {
+                          value: 100,
+                          message: 'Cannot serve more than 100 people'
+                        }
+                      }}
                     />
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
