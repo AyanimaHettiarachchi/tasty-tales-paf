@@ -133,6 +133,7 @@ const AddLearningPlan = () => {
         courseType: data.courseType,
         estimatedDuration: data.estimatedDuration
       };
+      
 
       console.log('Sending request to:', '/api/learning-plans');
       console.log('Request data:', JSON.stringify(learningPlan, null, 2));
