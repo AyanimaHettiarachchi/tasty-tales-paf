@@ -92,7 +92,7 @@ const [imageUrl, setImageUrl] = useState('');
   };
   
 
-  const addStep = () => {
+const addStep = () => {
     const newOrder = steps.length + 1;
     setSteps([
       ...steps, 
