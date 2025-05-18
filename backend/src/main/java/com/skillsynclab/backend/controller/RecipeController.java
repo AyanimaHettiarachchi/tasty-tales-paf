@@ -1,25 +1,39 @@
 package com.skillsynclab.backend.controller;
 
-import com.skillsynclab.backend.model.Recipe;
-import com.skillsynclab.backend.service.RecipeService;
+import java.util.List;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Optional;
+import com.skillsynclab.backend.model.Recipe;
+import com.skillsynclab.backend.service.RecipeService;
 
+// This class is a Spring Boot REST controller for managing recipes.
+// It provides endpoints to create, read, update, and delete recipes.
 @RestController
-@RequestMapping("/api/recipes")
+@RequestMapping("/api/recipes") // Base URL for all endpoints in this controller
 public class RecipeController {
 
+    // Logger for logging messages
+    // It uses SLF4J for logging, which is a simple facade for various logging frameworks.
     private static final Logger logger = LoggerFactory.getLogger(RecipeController.class);
 
     @Autowired
     private RecipeService recipeService;
 
+    // Create a new recipe
+    // Endpoint: POST /api/recipes
     @PostMapping
     public ResponseEntity<?> createRecipe(@RequestBody Recipe recipe) {
         try {
@@ -36,6 +50,8 @@ public class RecipeController {
         }
     }
 
+    // Fetch all recipes
+    // Endpoint: GET /api/recipes
     @GetMapping
     public ResponseEntity<List<Recipe>> getAllRecipes() {
         try {
@@ -49,6 +65,8 @@ public class RecipeController {
         }
     }
 
+    // Fetch a recipe by ID 
+    // Endpoint: GET /api/recipes/{id}
     @GetMapping("/{id}")
     public ResponseEntity<?> getRecipeById(@PathVariable String id) {
         try {
@@ -70,6 +88,8 @@ public class RecipeController {
         }
     }
 
+    // Update a recipe by ID
+    // Endpoint: PUT /api/recipes/{id}
     @PutMapping("/{id}")
     public ResponseEntity<?> updateRecipe(@PathVariable String id, @RequestBody Recipe recipe) {
         try {
@@ -91,6 +111,7 @@ public class RecipeController {
         }
     }
 
+    // Delete a recipe by ID 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteRecipe(@PathVariable String id) {
         try {
