@@ -127,10 +127,12 @@ const EditRecipe = () => {
     );
   };
 
+  // Remove an ingredient by index
   const removeIngredient = (index: number) => {
     setIngredients(prev => prev.filter((_, i) => i !== index));
   };
 
+  // Add a new step with a unique ID and sequential order
   const addStep = () => {
     setSteps(prev => [
       ...prev,
@@ -138,6 +140,7 @@ const EditRecipe = () => {
     ]);
   };
 
+  // Update a step's field
   const updateStep = (index: number, field: keyof Step, value: string) => {
     setSteps(prev =>
       prev.map((step, i) =>
@@ -146,11 +149,14 @@ const EditRecipe = () => {
     );
   };
 
+  // Remove a step by index
   const removeStep = (index: number) => {
     setSteps(prev => prev.filter((_, i) => i !== index));
   };
 
+  // Handle form submission
   const onSubmit = async (data: RecipeFormValues) => {
+
     if (!data.title || !data.description) {
       toast.error('Please fill in title and description.');
       return;
@@ -166,6 +172,7 @@ const EditRecipe = () => {
       return;
     }
 
+    // Validate image URLs
     const validIngredients = ingredients.map(ing => ({
       id: ing.id,
       name: ing.name || '',
@@ -215,6 +222,7 @@ const EditRecipe = () => {
     };
 
     try {
+      
       console.log('Updating recipe:', JSON.stringify(recipe, null, 2));
       const response = await axios.put(`http://localhost:8081/api/recipes/${id}`, recipe, {
         headers: {
